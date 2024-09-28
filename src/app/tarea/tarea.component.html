@@ -1,0 +1,105 @@
+<div class="container mt-5">
+  <form [formGroup]="formularioTarea" (ngSubmit)="enviarFormulario()" class="mb-4">
+    <div class="row">
+      <!-- Campo para el nombre de la tarea -->
+      <div class="col-md-6 mb-3">
+        <label for="nombre" class="form-label">Nombre de la Tarea:</label>
+        <input id="nombre" formControlName="nombre" class="form-control" required>
+      </div>
+
+      <!-- Campo para la fecha límite de la tarea -->
+      <div class="col-md-6 mb-3">
+        <label for="fecha_limite" class="form-label">Fecha Límite:</label>
+        <input type="date" id="fecha_limite" formControlName="fecha_limite" class="form-control" required>
+      </div>
+    </div>
+
+    <h3>Usuarios Asignados:</h3>
+    <div formArrayName="usuarios">
+      <div *ngFor="let usuario of usuarios.controls; let i = index" [formGroupName]="i" class="mb-3 border rounded p-3">
+        <div class="row">
+          <!-- Campo para el nombre del usuario -->
+          <div class="col-md-6 mb-3">
+            <label for="usuario-nombre-{{ i }}" class="form-label">Nombre:</label>
+            <input id="usuario-nombre-{{ i }}" formControlName="nombre" class="form-control" required>
+          </div>
+
+          <!-- Campo para la edad del usuario -->
+          <div class="col-md-6 mb-3">
+            <label for="usuario-edad-{{ i }}" class="form-label">Edad:</label>
+            <input type="number" id="usuario-edad-{{ i }}" formControlName="edad" class="form-control" required>
+          </div>
+        </div>
+
+        <h4>Habilidades:</h4>
+        <div formArrayName="habilidades">
+          <div *ngFor="let habilidad of habilidades(i).controls; let j = index" class="input-group mb-2">
+            <input id="habilidad-{{ i }}-{{ j }}" formControlName="{{ j }}" class="form-control" required>
+            <button type="button" class="btn btn-danger" (click)="eliminarHabilidad(i, j)">Eliminar Habilidad</button>
+          </div>
+        </div>
+
+        <!-- Botones para agregar/eliminar habilidades y usuarios -->
+        <button type="button" class="btn btn-primary mb-3" (click)="agregarHabilidad(i)">Agregar Habilidad</button>
+        <button type="button" class="btn btn-danger mb-3" (click)="eliminarUsuario(i)">Eliminar Usuario</button>
+      </div>
+    </div>
+
+    <!-- Botón para agregar un usuario nuevo -->
+    <button type="button" class="btn btn-primary mb-3" (click)="agregarUsuario()">Agregar Usuario</button>
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="btn btn-success">Enviar Tarea</button>
+  </form>
+
+  <!-- Campo de búsqueda reactiva -->
+  <div class="mb-3">
+    <label for="busqueda" class="form-label">Buscar Tareas:</label>
+    <input type="text" id="busqueda" [(ngModel)]="busqueda" (ngModelChange)="buscarTareas()" class="form-control" placeholder="Buscar por nombre o fecha...">
+  </div>
+
+  <!-- Lista de tareas con paginación -->
+  <div class="task-list">
+    <h1>Lista de Tareas</h1>
+
+    <!-- Selector para cambiar cuántas tareas se muestran por página -->
+    <label for="itemsPorPagina">Tareas por página:</label>
+    <select id="itemsPorPagina" class="form-select mb-3" (change)="cambiarTareasPorPagina($event)">
+      <option *ngFor="let opcion of [2, 4, 5, 20]" [value]="opcion">{{ opcion }}</option>
+    </select>
+
+    <div class="row">
+      <!-- Recorremos las tareas y mostramos cada una -->
+      <div *ngFor="let tarea of tareasFiltradas" class="task card col-md-4 mb-3">
+        <div class="card-body">
+          <h2 class="card-title">{{ tarea.nombre }}</h2>
+          <p><strong>Fecha Límite:</strong> {{ tarea.fecha_limite }}</p>
+          <p><strong>Estado:</strong> {{ tarea.estado }}</p>
+
+          <!-- cambiar el estado de la tarea -->
+          <button class="btn btn-warning" (click)="toggleEstado(tarea)">Cambiar Estado</button>
+
+          <div *ngIf="tarea.usuarios?.length">
+            <p><strong>Usuarios Asignados:</strong></p>
+            <ul>
+              <li *ngFor="let usuario of tarea.usuarios">
+                {{ usuario.nombre }} ({{ usuario.edad }} años)
+                <div *ngIf="usuario.habilidades?.length">
+                  <strong>Habilidades:</strong>
+                  <ul>
+                    <li *ngFor="let habilidad of usuario.habilidades">{{ habilidad }}</li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones para cambiar de página -->
+    <div class="pagination mt-3">
+      <button class="btn btn-primary me-2" (click)="paginaAnterior()">Página Anterior</button>
+      <button class="btn btn-primary" (click)="siguientePagina()">Siguiente Página</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+/* Colores personalizados */
+:root {
+  --primary-color: #2980b9;
+  --danger-color: #e74c3c;
+  --light-color: #00ccff;
+  --dark-color: #2d3436;
+  --secondary-color: #34495e;
+}
+
+/* Sobreescribe los colores de los botones */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: rgb(0, 76, 255);
+}
+
+.btn-primary:hover {
+  background-color: darken(var(--primary-color), 10%);
+  border-color: darken(var(--primary-color), 15%);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+  color: rgb(255, 0, 0);
+}
+
+.btn-danger:hover {
+  background-color: darken(var(--danger-color), 10%);
+  border-color: darken(var(--danger-color), 15%);
+}
+
+/* Inputs y selects */
+.form-control {
+  border-color: var(--secondary-color);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(41, 128, 185, 0.4); /* Sombras en azul */
+}
+
+/* Etiquetas */
+.form-label {
+  color: var(--primary-color);
+}
+
+/* Fondos de las tarjetas */
+.card {
+  background-color: var(--light-color);
+  border-color: var(--secondary-color);
+}
+
+.card-title {
+  color: var(--primary-color);
+}
+
+.card-body {
+  color: var(--dark-color);
+}
+
+/* Tabla */
+.table th {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.table td {
+  color: var(--dark-color);
+}
+
+/* Texto */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--primary-color);
+}
+
+p, li, a {
+  color: var(--dark-color);
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: darken(var(--primary-color), 10%);
+}
+
+/* Paginación */
+.pagination .btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.pagination .btn-primary:hover {
+  background-color: darken(var(--primary-color), 10%);
+}
